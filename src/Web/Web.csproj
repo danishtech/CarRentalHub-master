@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>eb5003b1-8932-4f21-a6b2-ff785ef7ed8a</UserSecretsId>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="2.6.362" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+    <Message Text="Restoring yarn packages" Importance="High" />
+    <Exec Command="yarn install --modules-folder .\wwwroot\lib" />
+    <Message Text="Checking for and applying yarn packages updates" Importance="High" />
+    <Exec Command="yarn upgrade jquery jquery-validation jquery-validation-unobtrusive popper.js @types/jquery --latest bootstrap@next --exact --modules-folder .\wwwroot\lib" />
+  </Target>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\fonts\" />
+    <Folder Include="wwwroot\lib\dist\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="BundlerMinifier.Core" Version="2.6.362" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\scripts\app.min.js" />
+  </ItemGroup>
+
+
+  
+</Project>
